@@ -517,6 +517,7 @@ static LayerListItem makeItem(
 		lp.hidden(),
 		lp.censoredRemote(),
 		lp.censoredLocal(),
+		lp.timelapseHidden(),
 		revealedLayers.contains(id),
 		lp.isolated(),
 		lp.clip(),
@@ -1392,6 +1393,7 @@ LayerListItem LayerListItem::null()
 		0,	   QString(), QColor(), 1.0f,  DP_BLEND_MODE_NORMAL,
 		0.0f,  QColor(),  false,	false, false,
 		false, false,	  false,	false, false,
+		false,
 		0,	   0,		  0,		0,
 	};
 }

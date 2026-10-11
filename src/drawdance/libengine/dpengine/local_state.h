@@ -20,6 +20,7 @@ typedef struct DP_LocalLayerState {
     bool hidden;
     bool alpha_lock;
     bool censored;
+    bool timelapse_hidden;
     uint16_t sketch_opacity;
     uint32_t sketch_tint;
 } DP_LocalLayerState;
@@ -135,6 +136,9 @@ DP_Message *DP_local_state_msg_layer_alpha_lock_new(int layer_id,
                                                     bool alpha_lock);
 
 DP_Message *DP_local_state_msg_layer_censored_new(int layer_id, bool censored);
+
+DP_Message *DP_local_state_msg_layer_timelapse_hidden_new(int layer_id,
+                                                          bool timelapse_hidden);
 
 DP_Message *DP_local_state_msg_track_move_lock_new(int track_id,
                                                    bool move_lock);

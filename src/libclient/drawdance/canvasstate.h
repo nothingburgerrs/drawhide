@@ -22,6 +22,7 @@ extern "C" {
 #include <QPoint>
 #include <QSet>
 #include <QSize>
+#include <QVector>
 #include <variant>
 
 struct DP_CanvasState;
@@ -64,6 +65,12 @@ public:
 	DP_CanvasState *take();
 
 	bool isNull() const;
+
+	//! Ids of layers flagged as hidden from timelapses.
+	QVector<int> timelapseHiddenLayerIds() const;
+
+	//! A copy of this state with the given layers hidden.
+	CanvasState withLayersHidden(const QVector<int> &layerIds) const;
 
 	int width() const;
 	int height() const;

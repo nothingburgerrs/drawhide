@@ -148,6 +148,7 @@ private:
 	void handleSaveFailed(const QString &errorMessage);
 
 	drawdance::ViewModeBuffer m_vmb;
+	QVector<int> m_hiddenLayerIds;
 	drawdance::CanvasState m_canvasState;
 	DP_ViewModeFilter m_vmf;
 	QRect m_crop;

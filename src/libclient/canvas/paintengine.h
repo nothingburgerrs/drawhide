@@ -162,6 +162,7 @@ public:
 	void setLayerSketch(int layerId, uint16_t opacity, const QColor &tint);
 	void setLayerAlphaLock(int layerId, bool alphaLock);
 	void setLayerCensoredLocal(int layerId, bool censored);
+	void setLayerTimelapseHidden(int layerId, bool timelapseHidden);
 	void setTrackVisibility(int trackId, bool hidden);
 	void setTrackOnionSkin(int trackId, bool onionSkin);
 	void setTrackMoveLock(int trackId, bool moveLock);

@@ -48,18 +48,19 @@
 #define DP_PROJECT_STR(X)  #X
 #define DP_PROJECT_XSTR(X) DP_PROJECT_STR(X)
 
-#define DP_PROJECT_SNAPSHOT_LAYER_FLAG_GROUP           (1u << 0u)
-#define DP_PROJECT_SNAPSHOT_LAYER_FLAG_HIDDEN          (1u << 1u)
-#define DP_PROJECT_SNAPSHOT_LAYER_FLAG_CENSORED_REMOTE (1u << 2u)
-#define DP_PROJECT_SNAPSHOT_LAYER_FLAG_PASS_THROUGH    (1u << 3u)
-#define DP_PROJECT_SNAPSHOT_LAYER_FLAG_CLIP            (1u << 4u)
-#define DP_PROJECT_SNAPSHOT_LAYER_FLAG_CENSORED_LOCAL  (1u << 5u)
-#define DP_PROJECT_SNAPSHOT_ANNOTATION_FLAG_PROTECTED  (1u << 0u)
-#define DP_PROJECT_SNAPSHOT_ANNOTATION_FLAG_ALIAS      (1u << 1u)
-#define DP_PROJECT_SNAPSHOT_ANNOTATION_FLAG_RASTERIZE  (1u << 2u)
-#define DP_PROJECT_SNAPSHOT_TRACK_FLAG_HIDDEN          (1u << 0u)
-#define DP_PROJECT_SNAPSHOT_TRACK_FLAG_ONION_SKIN      (1u << 1u)
-#define DP_PROJECT_SNAPSHOT_TRACK_FLAG_MOVE_LOCK       (1u << 2u)
+#define DP_PROJECT_SNAPSHOT_LAYER_FLAG_GROUP            (1u << 0u)
+#define DP_PROJECT_SNAPSHOT_LAYER_FLAG_HIDDEN           (1u << 1u)
+#define DP_PROJECT_SNAPSHOT_LAYER_FLAG_CENSORED_REMOTE  (1u << 2u)
+#define DP_PROJECT_SNAPSHOT_LAYER_FLAG_PASS_THROUGH     (1u << 3u)
+#define DP_PROJECT_SNAPSHOT_LAYER_FLAG_CLIP             (1u << 4u)
+#define DP_PROJECT_SNAPSHOT_LAYER_FLAG_CENSORED_LOCAL   (1u << 5u)
+#define DP_PROJECT_SNAPSHOT_LAYER_FLAG_TIMELAPSE_HIDDEN (1u << 6u)
+#define DP_PROJECT_SNAPSHOT_ANNOTATION_FLAG_PROTECTED   (1u << 0u)
+#define DP_PROJECT_SNAPSHOT_ANNOTATION_FLAG_ALIAS       (1u << 1u)
+#define DP_PROJECT_SNAPSHOT_ANNOTATION_FLAG_RASTERIZE   (1u << 2u)
+#define DP_PROJECT_SNAPSHOT_TRACK_FLAG_HIDDEN           (1u << 0u)
+#define DP_PROJECT_SNAPSHOT_TRACK_FLAG_ONION_SKIN       (1u << 1u)
+#define DP_PROJECT_SNAPSHOT_TRACK_FLAG_MOVE_LOCK        (1u << 2u)
 
 #define DP_PROJECT_SQL_MAIN_SAV(A, B, COND) ((COND) ? A "sav." B : A "" B)
 
@@ -2580,7 +2581,9 @@ static bool snapshot_insert_layer(DP_Project *prj,
         | DP_flag_uint(DP_layer_props_clip(lp),
                        DP_PROJECT_SNAPSHOT_LAYER_FLAG_CLIP)
         | DP_flag_uint(DP_layer_props_censored_local(lp),
-                       DP_PROJECT_SNAPSHOT_LAYER_FLAG_CENSORED_LOCAL);
+                       DP_PROJECT_SNAPSHOT_LAYER_FLAG_CENSORED_LOCAL)
+        | DP_flag_uint(DP_layer_props_timelapse_hidden(lp),
+                       DP_PROJECT_SNAPSHOT_LAYER_FLAG_TIMELAPSE_HIDDEN);
     return ps_bind_int(prj, stmt, 2, rel->layer_index)
         && ps_bind_int(prj, stmt, 3, rel->parent_index)
         && ps_bind_int(prj, stmt, 4, rel->layer_id)
@@ -5362,6 +5365,10 @@ static bool cfs_read_layer(DP_ProjectCanvasFromSnapshotContext *c,
 
     if (flags & DP_PROJECT_SNAPSHOT_LAYER_FLAG_CENSORED_LOCAL) {
         DP_transient_layer_props_censored_local_set(layer->tlp, true);
+    }
+
+    if (flags & DP_PROJECT_SNAPSHOT_LAYER_FLAG_TIMELAPSE_HIDDEN) {
+        DP_transient_layer_props_timelapse_hidden_set(layer->tlp, true);
     }
 
     if (flags & DP_PROJECT_SNAPSHOT_LAYER_FLAG_PASS_THROUGH) {

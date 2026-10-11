@@ -910,6 +910,13 @@ Message makeLocalChangeLayerCensoredMessage(int layerId, bool censored)
 		DP_local_state_msg_layer_censored_new(layerId, censored));
 }
 
+Message makeLocalChangeLayerTimelapseHiddenMessage(
+	int layerId, bool timelapseHidden)
+{
+	return Message::noinc(DP_local_state_msg_layer_timelapse_hidden_new(
+		layerId, timelapseHidden));
+}
+
 Message makeLocalChangeTrackMoveLockMessage(int trackId, bool moveLock)
 {
 	return Message::noinc(

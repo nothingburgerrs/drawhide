@@ -69,6 +69,8 @@ bool DP_layer_props_censored_remote(DP_LayerProps *lp);
 
 bool DP_layer_props_censored_local(DP_LayerProps *lp);
 
+bool DP_layer_props_timelapse_hidden(DP_LayerProps *lp);
+
 bool DP_layer_props_isolated(DP_LayerProps *lp);
 
 bool DP_layer_props_clip(DP_LayerProps *lp);
@@ -126,6 +128,8 @@ bool DP_transient_layer_props_censored_remote(DP_TransientLayerProps *tlp);
 
 bool DP_transient_layer_props_censored_local(DP_TransientLayerProps *tlp);
 
+bool DP_transient_layer_props_timelapse_hidden(DP_TransientLayerProps *tlp);
+
 bool DP_transient_layer_props_isolated(DP_TransientLayerProps *tlp);
 
 bool DP_transient_layer_props_clip(DP_TransientLayerProps *tlp);
@@ -164,6 +168,9 @@ void DP_transient_layer_props_censored_remote_set(DP_TransientLayerProps *tlp,
 
 void DP_transient_layer_props_censored_local_set(DP_TransientLayerProps *tlp,
                                                  bool censored_local);
+
+void DP_transient_layer_props_timelapse_hidden_set(
+    DP_TransientLayerProps *tlp, bool timelapse_hidden);
 
 void DP_transient_layer_props_hidden_set(DP_TransientLayerProps *tlp,
                                          bool hidden);

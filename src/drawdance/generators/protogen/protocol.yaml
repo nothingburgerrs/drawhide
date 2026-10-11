@@ -373,6 +373,7 @@ LocalChange:
               - LayerAlphaLock
               - LayerCensored
               - TrackMoveLock
+              - LayerTimelapseHidden
         - body bytes
 
 FeatureLimits:

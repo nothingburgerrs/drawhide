@@ -4320,6 +4320,8 @@ const char *DP_msg_local_change_type_variant_name(unsigned int value)
         return "LayerCensored";
     case DP_MSG_LOCAL_CHANGE_TYPE_TRACK_MOVE_LOCK:
         return "TrackMoveLock";
+    case DP_MSG_LOCAL_CHANGE_TYPE_LAYER_TIMELAPSE_HIDDEN:
+        return "LayerTimelapseHidden";
     default:
         return NULL;
     }

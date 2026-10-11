@@ -418,6 +418,7 @@ void LayerList::setLayerEditActions(const Actions &actions)
 	m_contextMenu->addMenu(m_actions.layerLockMenu);
 	m_contextMenu->addAction(m_actions.layerCensor);
 	m_contextMenu->addAction(m_actions.layerCensorLocal);
+	m_contextMenu->addAction(m_actions.layerTimelapseHidden);
 	m_contextMenu->addSeparator();
 	m_contextMenu->addAction(m_actions.setFillSource);
 	m_contextMenu->addAction(m_actions.clearFillSource);
@@ -533,6 +534,9 @@ void LayerList::setLayerEditActions(const Actions &actions)
 	connect(
 		m_aclmenu, &LayerAclMenu::layerCensoredLocalChange, this,
 		&LayerList::changeLayersCensorLocal);
+	connect(
+		m_aclmenu, &LayerAclMenu::layerTimelapseHiddenChange, this,
+		&LayerList::changeLayersTimelapseHidden);
 	connect(
 		m_alphaLockButton, &widgets::GroupedToolButton::clicked,
 		actions.layerAlphaLock, &QAction::trigger);
@@ -965,6 +969,16 @@ void LayerList::changeLayersCensorLocal(bool censor)
 	}
 }
 
+void LayerList::changeLayersTimelapseHidden(bool timelapseHidden)
+{
+	if(m_canvas) {
+		for(int layerId : m_selectedIds) {
+			m_canvas->paintEngine()->setLayerTimelapseHidden(
+				layerId, timelapseHidden);
+		}
+	}
+}
+
 void LayerList::disableAutoselectAny()
 {
 	if(m_canvas) {
@@ -1011,6 +1025,14 @@ void LayerList::setLayerCensoredLocal(int layerId, bool censored)
 {
 	if(m_canvas) {
 		m_canvas->paintEngine()->setLayerCensoredLocal(layerId, censored);
+	}
+}
+
+void LayerList::setLayerTimelapseHidden(int layerId, bool timelapseHidden)
+{
+	if(m_canvas) {
+		m_canvas->paintEngine()->setLayerTimelapseHidden(
+			layerId, timelapseHidden);
 	}
 }
 
@@ -1836,6 +1858,9 @@ dialogs::LayerProperties *LayerList::makeLayerPropertiesDialog(
 			dlg, &dialogs::LayerProperties::censoredLocalChanged, this,
 			&LayerList::setLayerCensoredLocal);
 		connect(
+			dlg, &dialogs::LayerProperties::timelapseHiddenChanged, this,
+			&LayerList::setLayerTimelapseHidden);
+		connect(
 			dlg, &dialogs::LayerProperties::sketchModeChanged, this,
 			&LayerList::setLayerSketch);
 		connect(
@@ -2271,6 +2296,7 @@ void LayerList::updateUiFromCurrent()
 	if(m_aclmenu) {
 		m_aclmenu->setCensored(layer.actuallyCensoredRemote());
 		m_aclmenu->setCensoredLocal(layer.censoredLocal);
+		m_aclmenu->setTimelapseHidden(layer.timelapseHidden);
 	}
 
 	bool compatibilityMode = m_canvas && m_canvas->isCompatibilityMode();

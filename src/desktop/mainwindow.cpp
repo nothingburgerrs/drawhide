@@ -7724,6 +7724,10 @@ void MainWindow::setupActions()
 		makeAction("layercensorlocal", tr("Block layer (censor for you)"))
 			.checkable()
 			.noDefaultShortcut();
+	QAction *layerTimelapseHidden =
+		makeAction("layertimelapsehidden", tr("Hide layer from timelapse"))
+			.checkable()
+			.noDefaultShortcut();
 	QAction *layerLockAll =
 		makeAction("layerlockall", tr("Lock layer entirely"))
 			.checkable()
@@ -7799,6 +7803,7 @@ void MainWindow::setupActions()
 	layerLockMenu->addAction(layerLockMove);
 	layerMenu->addAction(layerCensor);
 	layerMenu->addAction(layerCensorLocal);
+	layerMenu->addAction(layerTimelapseHidden);
 
 	layerMenu->addSeparator();
 	layerMenu->addAction(layerUpAct);
@@ -8292,6 +8297,7 @@ void MainWindow::setupActions()
 		layerLockMove,
 		layerCensor,
 		layerCensorLocal,
+		layerTimelapseHidden,
 		selectLayerByColor,
 	});
 	m_dockTimeline->setActions(

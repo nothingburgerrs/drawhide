@@ -52,7 +52,9 @@ TimelapseDialog::TimelapseDialog(
 	double flipbookSpeedPercent, int flipbookFrameRangeFirst,
 	int flipbookFrameRangeLast, QWidget *parent)
 	: QDialog(parent)
-	, m_canvasState(paintEngine->viewCanvasState())
+	, m_hiddenLayerIds(paintEngine->viewCanvasState().timelapseHiddenLayerIds())
+	, m_canvasState(
+		  paintEngine->viewCanvasState().withLayersHidden(m_hiddenLayerIds))
 	, m_vmf(paintEngine->viewModeFilter(m_vmb, m_canvasState))
 	, m_crop(crop)
 	, m_inFrameView(inFrameView)
@@ -848,7 +850,8 @@ void TimelapseDialog::accept()
 				playbackSecondsOrSpeed, flashSeconds, lingerAfterSeconds,
 				m_maxDeltaSlider->value(), m_maxQueueEntriesSlider->value(),
 				m_ownCheckBox->isChecked(), lingerBeforeLoops, lingerAfterLoops,
-				frameRangeFirst, frameRangeLast, animationFramerate);
+				frameRangeFirst, frameRangeLast, animationFramerate,
+				m_hiddenLayerIds);
 			m_saver->setAutoDelete(false);
 
 			connect(

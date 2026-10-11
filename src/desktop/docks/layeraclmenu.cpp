@@ -26,6 +26,12 @@ LayerAclMenu::LayerAclMenu(const LayerList::Actions &actions, QWidget *parent)
 		m_censoredLocal, &QAction::triggered, this,
 		&LayerAclMenu::layerCensoredLocalChange);
 
+	m_timelapseHidden = actions.layerTimelapseHidden;
+	addAction(m_timelapseHidden);
+	connect(
+		m_timelapseHidden, &QAction::triggered, this,
+		&LayerAclMenu::layerTimelapseHiddenChange);
+
 	addSection(tr("Locks:"));
 
 	m_lockAll = actions.layerLockAll;
@@ -144,6 +150,11 @@ void LayerAclMenu::setCensored(bool censor)
 void LayerAclMenu::setCensoredLocal(bool censor)
 {
 	m_censoredLocal->setChecked(censor);
+}
+
+void LayerAclMenu::setTimelapseHidden(bool timelapseHidden)
+{
+	m_timelapseHidden->setChecked(timelapseHidden);
 }
 
 void LayerAclMenu::setCanEdit(bool canEdit, bool compatibilityMode)

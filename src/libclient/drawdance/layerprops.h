@@ -36,6 +36,7 @@ public:
     bool hidden() const;
     bool censoredRemote() const;
     bool censoredLocal() const;
+    bool timelapseHidden() const;
     bool censoredAny() const;
     bool isolated() const;
     bool clip() const;

@@ -13,6 +13,7 @@
 #include <QQueue>
 #include <QRect>
 #include <QRunnable>
+#include <QVector>
 
 struct DP_DrawContext;
 struct DP_Image;
@@ -44,7 +45,7 @@ public:
 		double lingerAfterSeconds, double maxDeltaSeconds, int maxQueueEntries,
 		bool timeOwnOnly, int lingerBeforeLoops, int lingerAfterLoops,
 		int frameRangeFirst, int frameRangeLast, double animationFramerate,
-		QObject *parent = nullptr);
+		const QVector<int> &hiddenLayerIds, QObject *parent = nullptr);
 
 	void run() override;
 
@@ -194,6 +195,7 @@ private:
 	const int m_frameRangeFirst;
 	const int m_frameRangeLast;
 	const double m_animationFramerate;
+	const QVector<int> m_hiddenLayerIds;
 	drawdance::ViewModeBuffer m_vmb;
 	DP_ViewModeFilter m_vmf;
 	QImage m_scaledLogoImage;

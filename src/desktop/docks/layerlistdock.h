@@ -83,6 +83,7 @@ public:
 		QAction *layerLockMove = nullptr;
 		QAction *layerCensor = nullptr;
 		QAction *layerCensorLocal = nullptr;
+		QAction *layerTimelapseHidden = nullptr;
 		QActionGroup *selectLayerByColor;
 	};
 
@@ -157,11 +158,13 @@ private:
 		const std::function<bool(canvas::AclState::Layer &)> &fn);
 	void changeLayersCensor(bool censor);
 	void changeLayersCensorLocal(bool censor);
+	void changeLayersTimelapseHidden(bool timelapseHidden);
 	void disableAutoselectAny();
 	void toggleLayerVisibility();
 	void toggleLayerSketch();
 	void setLayerVisibility(int layerId, bool visible);
 	void setLayerCensoredLocal(int layerId, bool censored);
+	void setLayerTimelapseHidden(int layerId, bool timelapseHidden);
 	void setLayerSketch(int layerId, int opacityPercent, const QColor &tint);
 	void toggleSelection(const QModelIndex &idx);
 	void

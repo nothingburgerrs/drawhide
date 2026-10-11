@@ -300,6 +300,31 @@ double CanvasState::effectiveFramerate() const
 	return DP_canvas_state_effective_framerate(m_data);
 }
 
+QVector<int> CanvasState::timelapseHiddenLayerIds() const
+{
+	QVector<int> ids;
+	if(m_data) {
+		int count =
+			DP_canvas_state_timelapse_hidden_layer_ids(m_data, nullptr, 0);
+		if(count > 0) {
+			ids.resize(count);
+			DP_canvas_state_timelapse_hidden_layer_ids(
+				m_data, ids.data(), count);
+		}
+	}
+	return ids;
+}
+
+CanvasState CanvasState::withLayersHidden(const QVector<int> &layerIds) const
+{
+	if(!m_data || layerIds.isEmpty()) {
+		return *this;
+	} else {
+		return noinc(DP_canvas_state_hide_layers(
+			m_data, layerIds.constData(), layerIds.size()));
+	}
+}
+
 bool CanvasState::sameFrame(int frameIndexA, int frameIndexB) const
 {
 	return DP_canvas_state_same_frame(m_data, frameIndexA, frameIndexB);

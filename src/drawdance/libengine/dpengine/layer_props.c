@@ -36,6 +36,7 @@ struct DP_LayerProps {
     const bool hidden;
     const bool censored_remote;
     const bool censored_local;
+    const bool timelapse_hidden;
     const bool isolated;
     const bool clip;
     const bool alpha_lock;
@@ -56,6 +57,7 @@ struct DP_TransientLayerProps {
     bool hidden;
     bool censored_remote;
     bool censored_local;
+    bool timelapse_hidden;
     bool isolated;
     bool clip;
     bool alpha_lock;
@@ -79,6 +81,7 @@ struct DP_LayerProps {
     bool hidden;
     bool censored_remote;
     bool censored_local;
+    bool timelapse_hidden;
     bool isolated;
     bool clip;
     bool alpha_lock;
@@ -213,6 +216,13 @@ bool DP_layer_props_censored_local(DP_LayerProps *lp)
     return lp->censored_local;
 }
 
+bool DP_layer_props_timelapse_hidden(DP_LayerProps *lp)
+{
+    DP_ASSERT(lp);
+    DP_ASSERT(DP_atomic_get(&lp->refcount) > 0);
+    return lp->timelapse_hidden;
+}
+
 bool DP_layer_props_isolated(DP_LayerProps *lp)
 {
     DP_ASSERT(lp);
@@ -285,6 +295,7 @@ static DP_TransientLayerProps *alloc_transient_layer_props(DP_LayerProps *lp)
         lp->hidden,
         lp->censored_remote,
         lp->censored_local,
+        lp->timelapse_hidden,
         lp->isolated,
         lp->clip,
         lp->alpha_lock,
@@ -348,6 +359,7 @@ DP_transient_layer_props_new_init_with_transient_children_noinc(
     *tlp = (DP_TransientLayerProps){
         DP_ATOMIC_INIT(1),
         true,
+        false,
         false,
         false,
         false,
@@ -458,6 +470,14 @@ bool DP_transient_layer_props_censored_remote(DP_TransientLayerProps *tlp)
     DP_ASSERT(DP_atomic_get(&tlp->refcount) > 0);
     DP_ASSERT(tlp->transient);
     return DP_layer_props_censored_remote((DP_LayerProps *)tlp);
+}
+
+bool DP_transient_layer_props_timelapse_hidden(DP_TransientLayerProps *tlp)
+{
+    DP_ASSERT(tlp);
+    DP_ASSERT(DP_atomic_get(&tlp->refcount) > 0);
+    DP_ASSERT(tlp->transient);
+    return DP_layer_props_timelapse_hidden((DP_LayerProps *)tlp);
 }
 
 bool DP_transient_layer_props_censored_local(DP_TransientLayerProps *tlp)
@@ -599,6 +619,15 @@ void DP_transient_layer_props_censored_local_set(DP_TransientLayerProps *tlp,
     DP_ASSERT(DP_atomic_get(&tlp->refcount) > 0);
     DP_ASSERT(tlp->transient);
     tlp->censored_local = censored_local;
+}
+
+void DP_transient_layer_props_timelapse_hidden_set(DP_TransientLayerProps *tlp,
+                                                   bool timelapse_hidden)
+{
+    DP_ASSERT(tlp);
+    DP_ASSERT(DP_atomic_get(&tlp->refcount) > 0);
+    DP_ASSERT(tlp->transient);
+    tlp->timelapse_hidden = timelapse_hidden;
 }
 
 void DP_transient_layer_props_hidden_set(DP_TransientLayerProps *tlp,

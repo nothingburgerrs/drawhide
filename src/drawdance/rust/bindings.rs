@@ -195,7 +195,8 @@ pub const DP_MSG_LOCAL_CHANGE_TYPE_LAYER_SKETCH: u32 = 8;
 pub const DP_MSG_LOCAL_CHANGE_TYPE_LAYER_ALPHA_LOCK: u32 = 9;
 pub const DP_MSG_LOCAL_CHANGE_TYPE_LAYER_CENSORED: u32 = 10;
 pub const DP_MSG_LOCAL_CHANGE_TYPE_TRACK_MOVE_LOCK: u32 = 11;
-pub const DP_MSG_LOCAL_CHANGE_NUM_TYPE: u32 = 12;
+pub const DP_MSG_LOCAL_CHANGE_TYPE_LAYER_TIMELAPSE_HIDDEN: u32 = 12;
+pub const DP_MSG_LOCAL_CHANGE_NUM_TYPE: u32 = 13;
 pub const DP_MSG_LOCAL_CHANGE_BODY_MIN_SIZE: u32 = 0;
 pub const DP_MSG_LOCAL_CHANGE_BODY_MAX_SIZE: u32 = 65534;
 pub const DP_MSG_FEATURE_LIMITS_STATIC_LENGTH: u32 = 0;
@@ -4200,6 +4201,9 @@ extern "C" {
     pub fn DP_layer_props_censored_local(lp: *mut DP_LayerProps) -> bool;
 }
 extern "C" {
+    pub fn DP_layer_props_timelapse_hidden(lp: *mut DP_LayerProps) -> bool;
+}
+extern "C" {
     pub fn DP_layer_props_isolated(lp: *mut DP_LayerProps) -> bool;
 }
 extern "C" {
@@ -4355,6 +4359,12 @@ extern "C" {
     pub fn DP_transient_layer_props_censored_remote_set(
         tlp: *mut DP_TransientLayerProps,
         censored_remote: bool,
+    );
+}
+extern "C" {
+    pub fn DP_transient_layer_props_timelapse_hidden_set(
+        tlp: *mut DP_TransientLayerProps,
+        timelapse_hidden: bool,
     );
 }
 extern "C" {
@@ -6517,6 +6527,12 @@ extern "C" {
     pub fn DP_local_state_msg_layer_alpha_lock_new(
         layer_id: ::std::os::raw::c_int,
         alpha_lock: bool,
+    ) -> *mut DP_Message;
+}
+extern "C" {
+    pub fn DP_local_state_msg_layer_timelapse_hidden_new(
+        layer_id: ::std::os::raw::c_int,
+        timelapse_hidden: bool,
     ) -> *mut DP_Message;
 }
 extern "C" {
