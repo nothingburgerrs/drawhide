@@ -293,6 +293,16 @@
      </property>
     </widget>
    </item>
+   <item row="16" column="1">
+    <widget class="QCheckBox" name="timelapseHidden">
+     <property name="toolTip">
+      <string>Leave this layer out of timelapse exports. Only affects you.</string>
+     </property>
+     <property name="text">
+      <string>Hide from timelapse</string>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <customwidgets>

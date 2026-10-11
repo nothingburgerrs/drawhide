@@ -42,7 +42,8 @@ TimelapseSaverRunnable::TimelapseSaverRunnable(
 	double flashSeconds, double lingerAfterSeconds, double maxDeltaSeconds,
 	int maxQueueEntries, bool timeOwnOnly, int lingerBeforeLoops,
 	int lingerAfterLoops, int frameRangeFirst, int frameRangeLast,
-	double animationFramerate, QObject *parent)
+	double animationFramerate, const QVector<int> &hiddenLayerIds,
+	QObject *parent)
 	: QObject(parent)
 	, m_canvasState(canvasState)
 	, m_ffmpegPath(ffmpegPath)
@@ -80,6 +81,7 @@ TimelapseSaverRunnable::TimelapseSaverRunnable(
 	, m_frameRangeFirst(frameRangeFirst)
 	, m_frameRangeLast(frameRangeLast)
 	, m_animationFramerate(animationFramerate)
+	, m_hiddenLayerIds(hiddenLayerIds)
 	, m_vmf(DP_view_mode_filter_clone(m_vmb.get(), vmfOrNull))
 {
 }
@@ -573,9 +575,13 @@ QColor TimelapseSaverRunnable::PlaybackRunnable::mixBackgroundColors(
 }
 
 bool TimelapseSaverRunnable::PlaybackRunnable::handle(
-	int instances, const drawdance::CanvasState &canvasState, DP_LocalState *ls,
-	const DP_Rect *cropOrNull)
+	int instances, const drawdance::CanvasState &replayCanvasState,
+	DP_LocalState *ls, const DP_Rect *cropOrNull)
 {
+	// Layers flagged as hidden from timelapses are local state, so they're not
+	// part of the recorded history and need to be hidden here.
+	drawdance::CanvasState canvasState =
+		replayCanvasState.withLayersHidden(m_parent->m_hiddenLayerIds);
 	if(shouldStop()) {
 		qCDebug(lcDpTimelapseSaverRunnable, "Playback thread cancelled");
 		return false;

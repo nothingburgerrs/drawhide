@@ -351,4 +351,14 @@ void DP_transient_canvas_state_transient_selections_clear(
 void DP_transient_canvas_state_intuit_background(DP_TransientCanvasState *tcs);
 
 
+// Counts the layers flagged as hidden from timelapses. If out_ids is not null,
+// writes up to capacity of their ids into it.
+int DP_canvas_state_timelapse_hidden_layer_ids(DP_CanvasState *cs, int *out_ids,
+                                               int capacity);
+
+// Returns a new reference to a canvas state that has the given layers hidden.
+DP_CanvasState *DP_canvas_state_hide_layers(DP_CanvasState *cs,
+                                            const int *layer_ids, int count);
+
+
 #endif

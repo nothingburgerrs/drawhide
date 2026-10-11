@@ -23,6 +23,7 @@ public:
 		const QVector<uint8_t> exclusive);
 	void setCensored(bool censor);
 	void setCensoredLocal(bool censor);
+	void setTimelapseHidden(bool timelapseHidden);
 	void setCanEdit(bool canEdit, bool compatibilityMode);
 
 signals:
@@ -34,6 +35,7 @@ signals:
 	void layerUserAccessChanged(int userId, bool access);
 	void layerCensoredChange(bool censor);
 	void layerCensoredLocalChange(bool censor);
+	void layerTimelapseHiddenChange(bool timelapseHidden);
 
 protected:
 	void showEvent(QShowEvent *e) override;
@@ -45,6 +47,7 @@ private:
 	QVector<uint8_t> m_exclusive;
 	QAction *m_censored;
 	QAction *m_censoredLocal;
+	QAction *m_timelapseHidden;
 	QAction *m_lockAll;
 	QAction *m_contentLock;
 	QAction *m_propsLock;

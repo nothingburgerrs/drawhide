@@ -103,6 +103,11 @@ bool LayerProps::censoredLocal() const
     return DP_layer_props_censored_local(m_data);
 }
 
+bool LayerProps::timelapseHidden() const
+{
+    return DP_layer_props_timelapse_hidden(m_data);
+}
+
 bool LayerProps::censoredAny() const
 {
     return DP_layer_props_censored_any(m_data);

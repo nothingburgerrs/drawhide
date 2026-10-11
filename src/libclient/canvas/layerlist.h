@@ -53,6 +53,9 @@ struct LayerListItem {
 	bool censoredRemote;
 	bool censoredLocal;
 
+	//! Layer is left out of timelapse exports (local only)
+	bool timelapseHidden;
+
 	//! Layer is actually censored, but was revealed anyway
 	bool revealed;
 

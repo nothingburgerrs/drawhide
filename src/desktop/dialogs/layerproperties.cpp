@@ -115,7 +115,8 @@ void LayerProperties::setNewLayerItem(
 	m_item = {
 		0,	   QString(), QColor(), 1.0f,  DP_BLEND_MODE_NORMAL,
 		0.0f,  QColor(),  false,	false, false,
-		false, group,	  false,	false, group,
+		false, false,	  group,	false, false,
+		group,
 		0,	   0,		  0,		0,
 	};
 	m_selectedId = selectedId;
@@ -130,6 +131,9 @@ void LayerProperties::setNewLayerItem(
 	m_ui->censoredLocal->setChecked(false);
 	m_ui->censoredLocal->setEnabled(false);
 	m_ui->censoredLocal->setVisible(false);
+	m_ui->timelapseHidden->setChecked(false);
+	m_ui->timelapseHidden->setEnabled(false);
+	m_ui->timelapseHidden->setVisible(false);
 	setSketchParamsFromSettings();
 	m_ui->defaultLayer->setChecked(false);
 	m_ui->createdBy->setToolTip(QString());
@@ -174,6 +178,9 @@ void LayerProperties::setLayerItem(
 	m_ui->censoredLocal->setChecked(item.censoredLocal);
 	m_ui->censoredLocal->setEnabled(true);
 	m_ui->censoredLocal->setVisible(true);
+	m_ui->timelapseHidden->setChecked(item.timelapseHidden);
+	m_ui->timelapseHidden->setEnabled(true);
+	m_ui->timelapseHidden->setVisible(true);
 	if(item.sketchOpacity <= 0.0f) {
 		setSketchParamsFromSettings();
 	} else {
@@ -473,6 +480,11 @@ void LayerProperties::emitChanges()
 	bool censoredLocal = m_ui->censoredLocal->isChecked();
 	if(censoredLocal != m_item.censoredLocal) {
 		emit censoredLocalChanged(m_item.id, censoredLocal);
+	}
+
+	bool timelapseHidden = m_ui->timelapseHidden->isChecked();
+	if(timelapseHidden != m_item.timelapseHidden) {
+		emit timelapseHiddenChanged(m_item.id, timelapseHidden);
 	}
 
 	int oldSketchOpacity = qRound(m_item.sketchOpacity * 100.0);

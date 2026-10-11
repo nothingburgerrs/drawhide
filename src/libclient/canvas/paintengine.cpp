@@ -393,6 +393,13 @@ void PaintEngine::setLayerCensoredLocal(int layerId, bool censor)
 	receiveMessages(false, 1, &msg);
 }
 
+void PaintEngine::setLayerTimelapseHidden(int layerId, bool timelapseHidden)
+{
+	net::Message msg = net::makeLocalChangeLayerTimelapseHiddenMessage(
+		layerId, timelapseHidden);
+	receiveMessages(false, 1, &msg);
+}
+
 void PaintEngine::setTrackVisibility(int trackId, bool hidden)
 {
 	net::Message msg =

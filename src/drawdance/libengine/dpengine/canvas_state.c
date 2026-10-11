@@ -2891,3 +2891,53 @@ void DP_transient_canvas_state_intuit_background(DP_TransientCanvasState *tcs)
         }
     }
 }
+
+
+static int collect_timelapse_hidden(DP_LayerPropsList *lpl, int *out_ids,
+                                    int capacity, int found)
+{
+    int count = DP_layer_props_list_count(lpl);
+    for (int i = 0; i < count; ++i) {
+        DP_LayerProps *lp = DP_layer_props_list_at_noinc(lpl, i);
+        if (DP_layer_props_timelapse_hidden(lp)) {
+            if (out_ids && found < capacity) {
+                out_ids[found] = DP_layer_props_id(lp);
+            }
+            ++found;
+        }
+        DP_LayerPropsList *child_lpl = DP_layer_props_children_noinc(lp);
+        if (child_lpl) {
+            found =
+                collect_timelapse_hidden(child_lpl, out_ids, capacity, found);
+        }
+    }
+    return found;
+}
+
+int DP_canvas_state_timelapse_hidden_layer_ids(DP_CanvasState *cs, int *out_ids,
+                                               int capacity)
+{
+    DP_ASSERT(cs);
+    return collect_timelapse_hidden(DP_canvas_state_layer_props_noinc(cs),
+                                    out_ids, capacity, 0);
+}
+
+DP_CanvasState *DP_canvas_state_hide_layers(DP_CanvasState *cs,
+                                            const int *layer_ids, int count)
+{
+    DP_ASSERT(cs);
+    if (count <= 0) {
+        return DP_canvas_state_incref(cs);
+    }
+    DP_TransientCanvasState *tcs = DP_transient_canvas_state_new(cs);
+    DP_LayerRoutes *lr = DP_transient_canvas_state_layer_routes_noinc(tcs);
+    for (int i = 0; i < count; ++i) {
+        DP_LayerRoutesEntry *lre = DP_layer_routes_search(lr, layer_ids[i]);
+        if (lre) {
+            DP_TransientLayerProps *tlp =
+                DP_layer_routes_entry_transient_props(lre, tcs);
+            DP_transient_layer_props_hidden_set(tlp, true);
+        }
+    }
+    return DP_transient_canvas_state_persist(tcs);
+}

@@ -953,6 +953,9 @@ void CanvasModel::applyLocalStateAction(const DP_LocalStateAction &lsa)
 	case DP_LOCAL_STATE_ACTION_LAYER_CENSOR:
 		m_paintengine->setLayerCensoredLocal(lsa.data.id, true);
 		return;
+	case DP_LOCAL_STATE_ACTION_LAYER_TIMELAPSE_HIDE:
+		m_paintengine->setLayerTimelapseHidden(lsa.data.id, true);
+		return;
 	case DP_LOCAL_STATE_ACTION_LAYER_ENABLE_SKETCH:
 		m_paintengine->setLayerSketch(
 			lsa.data.sketch.id, lsa.data.sketch.opacity, lsa.data.sketch.tint);
