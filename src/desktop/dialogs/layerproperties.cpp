@@ -115,7 +115,8 @@ void LayerProperties::setNewLayerItem(
 	m_item = {
 		0,	   QString(), QColor(), 1.0f,  DP_BLEND_MODE_NORMAL,
 		0.0f,  QColor(),  false,	false, false,
-		false, group,	  false,	false, group,
+		false, false,	  group,	false, false,
+		group,
 		0,	   0,		  0,		0,
 	};
 	m_selectedId = selectedId;
